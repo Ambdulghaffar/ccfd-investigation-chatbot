@@ -1,0 +1,45 @@
+{
+  "creation_date": "2026-03-03 18:29:32",
+  "random_seed": 42,
+  "datasets": {
+    "paysim": {
+      "source": "Synthetic Financial Datasets (PaySim)",
+      "train_size": 5090096,
+      "test_size": 1272524,
+      "fraud_rate_train": "0.13%",
+      "fraud_rate_test": "0.13%"
+    },
+    "ulb": {
+      "source": "Credit Card Fraud Detection (ULB)",
+      "train_size": 227845,
+      "test_size": 56962,
+      "fraud_rate_train": "0.173%",
+      "fraud_rate_test": "0.172%"
+    }
+  },
+  "risk_score": {
+    "description": "Score de risque calculé avant appel LLM",
+    "range": [
+      0,
+      1
+    ],
+    "levels": {
+      "LOW": "< 0.4",
+      "MEDIUM": "0.4 - 0.7",
+      "HIGH": ">= 0.7"
+    },
+    "validation": {
+      "paysim_fraud_mean": "0.763",
+      "paysim_legit_mean": "0.314",
+      "ulb_fraud_mean": "0.395",
+      "ulb_legit_mean": "0.072"
+    }
+  },
+  "files_created": [
+    "train_unified_with_risk.csv",
+    "context_examples_with_risk.csv",
+    "test_paysim_LOCKED_with_risk.csv",
+    "test_ulb_LOCKED_with_risk.csv",
+    "metadata.json"
+  ]
+}

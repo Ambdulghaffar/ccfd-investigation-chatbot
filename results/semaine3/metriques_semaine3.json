@@ -1,0 +1,29 @@
+{
+  "date_generation": "2026-03-03 18:31:24",
+  "nb_investigations": 30,
+  "performance": {
+    "accuracy": 0.5,
+    "precision": 0.5,
+    "recall": 1.0,
+    "f1_score": 0.6666666666666666,
+    "confusion_matrix": {
+      "TN": 0,
+      "FP": 15,
+      "FN": 0,
+      "TP": 15
+    }
+  },
+  "convergence": {
+    "nb_questions_mean": 6.0,
+    "nb_questions_min": 6,
+    "nb_questions_max": 6,
+    "duration_mean": 0.0,
+    "duration_min": 0.0,
+    "duration_max": 0.0
+  },
+  "confidence": {
+    "mean_all": 69.0,
+    "mean_correct": 72.0,
+    "mean_incorrect": 66.0
+  }
+}

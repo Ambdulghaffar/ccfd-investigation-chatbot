@@ -1,0 +1,49 @@
+# ── Clés API et variables d'environnement ────────────────────────────────────
+.env
+*.env
+
+# ── Gros fichiers de données (trop volumineux pour GitHub) ───────────────────
+data/train_unified_with_risk.csv
+data/test_paysim_LOCKED_with_risk.csv
+data/test_ulb_LOCKED_with_risk.csv
+data/context_examples_with_risk.csv
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ── Environnements virtuels ───────────────────────────────────────────────────
+venv/
+.venv/
+env/
+.env/
+
+# ── Jupyter / Kaggle ──────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── Streamlit ─────────────────────────────────────────────────────────────────
+.streamlit/
+
+# ── IDEs ──────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs et temporaires ───────────────────────────────────────────────────────
+*.log
+*.tmp
+*.bak
