@@ -1,6 +1,6 @@
 # 🛡️ CCFD Investigation Chatbot — Dialogue LLM pour la Détection de Fraude
 
-> **Projet Master S3 · Sécurité des transactions éléctroniqus et détections de fraudes**  
+> **Projet Master S3 · Sécurité des Transactions Électroniques et Détection de Fraudes**  
 > Context Engineering + LLM pour la détection de fraude cartes bancaires  
 > *Chatbot d'investigation CCFD : dialogue intelligent + contexte dynamique*
 
@@ -163,7 +163,7 @@ Le notebook complet (pipeline de données, scoring de risque, moteur chatbot, 30
 
 ---
 
-## �👤 Auteur
+## 👤 Ambdulghaffar Ahamadi
 
-Projet Master S3 · Sécurité des transactions éléctroniques et détection de fraudes  
+Projet Master S3 · Sécurité des Transactions Électroniques et Détection de Fraudes  
 *Context Engineering + LLM pour la Détection de Fraude Cartes Bancaires*
