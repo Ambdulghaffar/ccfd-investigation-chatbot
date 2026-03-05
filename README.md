@@ -1,6 +1,6 @@
 # 🛡️ CCFD Investigation Chatbot — Dialogue LLM pour la Détection de Fraude
 
-> **Projet Master S3 · Sécurité · Sujet 4**  
+> **Projet Master S3 · Sécurité des transactions éléctroniqus et détections de fraudes**  
 > Context Engineering + LLM pour la détection de fraude cartes bancaires  
 > *Chatbot d'investigation CCFD : dialogue intelligent + contexte dynamique*
 
@@ -91,7 +91,7 @@ projet_chatbot_antifraude/
 
 ### 1. Cloner le repo
 ```bash
-git clone https://github.com/<votre-username>/ccfd-investigation-chatbot.git
+git clone https://github.com/Ambdulghaffar/ccfd-investigation-chatbot.git
 cd ccfd-investigation-chatbot
 ```
 
@@ -155,7 +155,15 @@ Puis ouvrir dans le navigateur : **http://localhost:8501**
 
 ---
 
-## 👤 Auteur
+## � Notebook Kaggle (Semaines 1–3)
 
-Projet Master S3 · Sécurité des transactions éléctroniqus et détection de fraude  
+Le notebook complet (pipeline de données, scoring de risque, moteur chatbot, 30 investigations) est disponible sur Kaggle :
+
+🔗 [Voir le notebook sur Kaggle](https://www.kaggle.com/code/ambdulghaffrar/notebook96abd24326/notebook?scriptVersionId=301265852)
+
+---
+
+## �👤 Auteur
+
+Projet Master S3 · Sécurité des transactions éléctroniques et détection de fraudes  
 *Context Engineering + LLM pour la Détection de Fraude Cartes Bancaires*
