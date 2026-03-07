@@ -364,11 +364,13 @@ def load_metrics() -> dict:
 @st.cache_data(show_spinner=False)
 def load_all_logs() -> list:
     logs = []
-    for i in range(1, 31):
+    for i in range(1, 40): # Modifié à 40 au cas où, mais 31 était bien aussi
         p = RESULTS_S3 / f"log_s3_{i:02d}.json"
         if p.exists():
             with open(p, "r", encoding="utf-8") as f:
-                logs.append(json.load(f))
+                log_data = json.load(f)
+                log_data["log_id"] = i
+                logs.append(log_data)
     return logs
 
 
@@ -842,6 +844,13 @@ with tab_metrics:
         sel_log_key = st.selectbox("Sélectionner une session", list(log_options.keys()), key="sel_log")
         sel_log_idx = log_options[sel_log_key]
         sel_log = logs[sel_log_idx]
+        
+        # Safe access to nb_questions which might be inside context or missing
+        nb_questions = sel_log.get("nb_questions")
+        if nb_questions is None and "context" in sel_log:
+            nb_questions = sel_log["context"].get("nb_questions", "N/A")
+        elif nb_questions is None:
+            nb_questions = "N/A"
 
         correct = sel_log.get("correct", sel_log["ground_truth"] == sel_log["prediction"])
         st.markdown(f"""
@@ -852,7 +861,7 @@ with tab_metrics:
     <tr><td style="color:#64748b;padding:3px 0">Vérité terrain</td><td style="text-align:right">{_badge_truth(1 if sel_log['ground_truth']=='FRAUDE' else 0)}</td></tr>
     <tr><td style="color:#64748b;padding:3px 0">Prédiction</td><td style="text-align:right">{_badge_truth(1 if sel_log['prediction']=='FRAUDE' else 0)}</td></tr>
     <tr><td style="color:#64748b;padding:3px 0">Confiance</td><td style="color:#e2e8f0;text-align:right">{sel_log['confidence_score']}%</td></tr>
-    <tr><td style="color:#64748b;padding:3px 0">Questions</td><td style="color:#e2e8f0;text-align:right">{sel_log['nb_questions']}</td></tr>
+    <tr><td style="color:#64748b;padding:3px 0">Questions</td><td style="color:#e2e8f0;text-align:right">{nb_questions}</td></tr>
     <tr><td style="color:#64748b;padding:3px 0">Résultat</td><td style="text-align:right"><span class="badge {'badge-legit' if correct else 'badge-fraud'}">{'✓ Correct' if correct else '✗ Incorrect'}</span></td></tr>
   </table>
 </div>
@@ -860,26 +869,41 @@ with tab_metrics:
 
     with t_col2:
         st.markdown('<div class="section-title">Conversation complète</div>', unsafe_allow_html=True)
-        conv_text = sel_log.get("conversation", "")
-        lines = conv_text.split("\n")
-
+        conv_data = sel_log.get("conversation", [])
+        
         rendered = '<div class="glass-card" style="max-height:400px;overflow-y:auto;padding:1rem">'
         rendered += '<div class="chat-area" style="max-height:none">'
-        current_bubble = ""
-        current_role = None
 
-        for line in lines:
-            line = line.strip()
-            if not line:
-                continue
-            if line.startswith("🤖"):
-                text = line[2:].strip().replace(": ", "", 1).strip()
-                if "```json" not in text:
-                    rendered += _chat_bubble_bot(text)
-            elif line.startswith("👤"):
-                text = line[2:].strip().replace(": ", "", 1).strip()
-                if text and not text.startswith("Contexte") and not text.startswith("Prends"):
-                    rendered += _chat_bubble_user(text)
+        if isinstance(conv_data, str):
+            # Ancien format : Une seule grande chaîne avec des émojis
+            lines = conv_data.split("\n")
+            for line in lines:
+                line = line.strip()
+                if not line:
+                    continue
+                if line.startswith("🤖"):
+                    text = line[2:].strip().replace(": ", "", 1).strip()
+                    if "```json" not in text:
+                        rendered += _chat_bubble_bot(text)
+                elif line.startswith("👤"):
+                    text = line[2:].strip().replace(": ", "", 1).strip()
+                    if text and not text.startswith("Contexte") and not text.startswith("Prends"):
+                        rendered += _chat_bubble_user(text)
+        elif isinstance(conv_data, list):
+            # Nouveau format Kaggle : Liste de dictionnaires {"role": ..., "content": ...}
+            for msg in conv_data:
+                role = msg.get("role", "")
+                text = msg.get("content", "").strip()
+                if not text:
+                    continue
+                
+                if role == "assistant":
+                    # On ignore les bulles contenant du JSON (la décision finale technique)
+                    if "```json" not in text and not text.startswith("{"):
+                        rendered += _chat_bubble_bot(text)
+                elif role == "user":
+                    if text and not text.startswith("Contexte") and not text.startswith("Prends"):
+                        rendered += _chat_bubble_user(text)
 
         rendered += "</div></div>"
         st.markdown(rendered, unsafe_allow_html=True)
