@@ -374,6 +374,34 @@ def load_all_logs() -> list:
     return logs
 
 
+def save_live_investigation(record: dict):
+    path = DATA_DIR / "live_history.json"
+    history = []
+    if path.exists():
+        with open(path, "r", encoding="utf-8") as f:
+            try:
+                history = json.load(f)
+            except json.JSONDecodeError:
+                history = []
+    
+    # Assign a rough log_id based on count
+    record["log_id"] = len(history) + 1
+    history.append(record)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(history, f, indent=2, ensure_ascii=False)
+
+
+def load_live_history() -> list:
+    path = DATA_DIR / "live_history.json"
+    if path.exists():
+        with open(path, "r", encoding="utf-8") as f:
+            try:
+                return json.load(f)
+            except json.JSONDecodeError:
+                pass
+    return []
+
+
 # ══════════════════════════════════════════════════════════════════════════════
 # SESSION STATE INIT
 # ══════════════════════════════════════════════════════════════════════════════
@@ -500,9 +528,10 @@ st.markdown("""
 # TABS
 # ══════════════════════════════════════════════════════════════════════════════
 
-tab_live, tab_metrics = st.tabs([
+tab_live, tab_metrics, tab_history = st.tabs([
     "💬 Investigation Live",
     "📊 Analyse & Métriques",
+    "📖 Historique Live"
 ])
 
 
@@ -699,6 +728,16 @@ with tab_live:
                         st.session_state.inv_messages.append(
                             {"role": "bot", "text": "J'ai réuni suffisamment d'éléments. Voici ma décision finale :"}
                         )
+                        
+                        # Sauvegarder dans l'historique
+                        save_live_investigation({
+                            "timestamp": time.time(),
+                            "transaction": row,
+                            "conversation": [
+                                {"role": m["role"], "content": m["text"]} for m in st.session_state.inv_messages
+                            ],
+                            "decision": st.session_state.inv_decision
+                        })
 
                     st.rerun()
 
@@ -907,3 +946,126 @@ with tab_metrics:
 
         rendered += "</div></div>"
         st.markdown(rendered, unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 3 — HISTORIQUE LIVE
+# ══════════════════════════════════════════════════════════════════════════════
+
+with tab_history:
+    st.markdown('<div class="section-title" style="font-size:0.8rem">📖 Historique des Investigations Live</div>', unsafe_allow_html=True)
+    
+    live_logs = load_live_history()
+    
+    if not live_logs:
+        st.markdown("""
+<div class="glass-card" style="text-align:center;padding:4rem 2rem;color:#64748b">
+  <div style="font-size:3rem;margin-bottom:1rem">📭</div>
+  <div>Aucune investigation n'a encore été enregistrée.</div>
+</div>
+""", unsafe_allow_html=True)
+    else:
+        # ── Filtres Historique ──
+        h_col1, h_col2, h_col3 = st.columns(3)
+        with h_col1:
+            h_src = st.selectbox("Filtrer par Source", ["Toutes", "PaySim", "ULB"], key="h_src")
+        with h_col2:
+            h_risk = st.selectbox("Filtrer par Risque Initial", ["Tous", "HIGH", "MEDIUM", "LOW"], key="h_risk")
+        with h_col3:
+            h_sort = st.selectbox("Trier par", ["Plus récents", "Plus anciens"], key="h_sort")
+
+        # Appliquer les filtres
+        filtered_live = []
+        for l in live_logs:
+            tx = l.get("transaction", {})
+            src = tx.get("source", "").lower()
+            risk = tx.get("risk_level", "")
+            
+            if h_src == "PaySim" and "paysim" not in src: continue
+            if h_src == "ULB" and "ulb" not in src: continue
+            if h_risk != "Tous" and risk != h_risk: continue
+            
+            filtered_live.append(l)
+
+        if h_sort == "Plus récents":
+            filtered_live.reverse()
+
+        st.markdown("<div style='margin-top:1.5rem'></div>", unsafe_allow_html=True)
+
+        h_left, h_right = st.columns([1, 2.5], gap="large")
+
+        with h_left:
+            if not filtered_live:
+                st.warning("Aucun résultat pour ces filtres.")
+            else:
+                log_options = {}
+                for l in filtered_live:
+                    tx = l.get("transaction", {})
+                    dec = l.get("decision", {})
+                    tx_id = tx.get("transaction_id", "Inconnu")[:15]
+                    is_fraud = (dec.get("decision") == "FRAUDE")
+                    icon = "🔴" if is_fraud else "🟢"
+                    label = f"#{l.get('log_id', '?')} {icon} {tx_id} ({dec.get('confidence', 0)}%)"
+                    log_options[label] = l
+                
+                sel_history_key = st.selectbox("Sélectionner une investigation", list(log_options.keys()), key="sel_history_log")
+                sel_history = log_options[sel_history_key]
+
+                tx_data = sel_history.get("transaction", {})
+                st.markdown(f"""
+<div class="glass-card">
+  <div class="section-title">Détails de la Transaction</div>
+  <table style="width:100%;font-size:0.78rem;border-collapse:collapse">
+    <tr><td style="color:#64748b;padding:3px 0">Transaction</td><td style="color:#e2e8f0;text-align:right">{tx_data.get('transaction_id')}</td></tr>
+    <tr><td style="color:#64748b;padding:3px 0">Montant</td><td style="color:#e2e8f0;text-align:right">{float(tx_data.get('amount', 0)):,.2f}</td></tr>
+    <tr><td style="color:#64748b;padding:3px 0">Source</td><td style="color:#e2e8f0;text-align:right">{tx_data.get('source')}</td></tr>
+    <tr><td style="color:#64748b;padding:3px 0">Risque Initial</td><td style="text-align:right">{_badge_risk(tx_data.get('risk_level', 'LOW'))}</td></tr>
+    <tr><td style="color:#64748b;padding:3px 0">Vérité terrain</td><td style="text-align:right">{_badge_truth(int(tx_data.get('is_fraud', -1)))}</td></tr>
+  </table>
+</div>
+""", unsafe_allow_html=True)
+
+        with h_right:
+            if filtered_live:
+                st.markdown('<div class="section-title">Conversation & Verdict</div>', unsafe_allow_html=True)
+                
+                conv_data = sel_history.get("conversation", [])
+                rendered_h = '<div class="glass-card" style="max-height:400px;overflow-y:auto;padding:1rem">'
+                rendered_h += '<div class="chat-area" style="max-height:none">'
+
+                for msg in conv_data:
+                    role = msg.get("role", "")
+                    text = msg.get("content", "").strip()
+                    if not text: continue
+                    
+                    if role == "bot" or role == "assistant":
+                        if "```json" not in text and not text.startswith("{"):
+                            rendered_h += _chat_bubble_bot(text)
+                    elif role == "user":
+                        if text and not text.startswith("Contexte") and not text.startswith("Prends"):
+                            rendered_h += _chat_bubble_user(text)
+
+                rendered_h += "</div></div>"
+                st.markdown(rendered_h, unsafe_allow_html=True)
+
+                # Afficher la décision
+                dec = sel_history.get("decision")
+                if dec:
+                    is_fraud = dec.get("decision") == "FRAUDE"
+                    css = "verdict-fraud" if is_fraud else "verdict-legit"
+                    emoji = "🚨" if is_fraud else "✅"
+                    key_signals_html = " ".join(
+                        f'<span class="{"signal-fraud" if is_fraud else "signal-legit"}">{s}</span>'
+                        for s in (dec.get("key_signals") or [])
+                    )
+                    st.markdown(f"""
+<div class="{css}" style="margin-top:1.2rem;padding:1.5rem">
+  <div class="verdict-emoji" style="font-size:2.5rem">{emoji}</div>
+  <div class="verdict-title" style="color:{'#f87171' if is_fraud else '#4ade80'};font-size:1.5rem">
+    {dec.get('decision')}
+  </div>
+  <div class="verdict-conf">Confiance : <strong>{dec.get('confidence')}%</strong></div>
+  <div style="margin-bottom:0.8rem">{key_signals_html}</div>
+  <div class="verdict-just">{dec.get('justification')}</div>
+</div>
+""", unsafe_allow_html=True)
