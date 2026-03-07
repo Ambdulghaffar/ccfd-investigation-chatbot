@@ -32,6 +32,7 @@ env/
 # ── Jupyter / Kaggle ──────────────────────────────────────────────────────────
 .ipynb_checkpoints/
 *.ipynb_checkpoints
+notebook96abd24326.ipynb
 
 # ── Streamlit ─────────────────────────────────────────────────────────────────
 .streamlit/
