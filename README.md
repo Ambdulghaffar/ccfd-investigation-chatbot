@@ -130,7 +130,7 @@ Pour juger efficacement notre module sans intervention humaine, nous avons gén�
 - **Synthetic Financial Datasets (PaySim)** — [Lien Kaggle](https://www.kaggle.com/datasets/ealaxi/paysim1)  
 
 Le code expérimental, le nettoyage des données et les calculs statistiques Sont situés sur notre notebook Kaggle :
-🔗 **[Voir le notebook complet sur Kaggle](https://www.kaggle.com/code/ambdulghaffrar/notebook96abd24326/notebook)**
+🔗 **[Voir le notebook complet sur Kaggle](https://www.kaggle.com/code/ambdulghaffrar/notebook96abd24326/notebook?scriptVersionId=302042663)**
 
 ---
 
