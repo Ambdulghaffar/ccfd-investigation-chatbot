@@ -12,158 +12,132 @@ Comment créer un LLM conversationnel qui, en dialogue interactif, utilise un **
 
 ---
 
+## 🌟 Fonctionnalités Clés de l'Application
+
+Notre application, développée avec Streamlit, se divise en deux parties majeures :
+
+### 1. 💬 Mode Interactif : "Investigation Live"
+Prenez la place du client ! Le Chatbot joue le rôle de l'analyste antifraude et vous interroge en temps réel sur une transaction suspecte de votre compte. 
+- **Contexte Dynamique :** À chaque tour de dialogue, l'IA accumule vos réponses, ajuste la probabilité de fraude en temps réel et met à jour son contexte.
+- **Jauge de Risque Visuelle :** Suivez l'impact de vos réponses. Des badges verts (signaux légitimes) et des badges rouges (signaux frauduleux) s'ajoutent dynamiquement sur le côté gauche de l'écran.
+- **Le Verdict :** Après un nombre maximum de 6 questions, le LLM tranche : `FRAUDE` ou `LÉGITIME`, avec une justification argumentée.
+
+### 2. 📖 Historique d'Investigation (Tab Live)
+Cette section permet de revivre les investigations précédentes que vous avez menées avec le Bot.
+- **Sauvegarde persistante :** Toutes les sessions sont sauvegardées en JSON.
+- **Filtres de recherche :** Retrouvez une enquête spécifique en fonction de la "Source" (PaySim ou ULB) ou du niveau de "Risque Initial".
+- **Visualisation Détaillée :** Vous pouvez ouvrir un rapport complet détaillant la conversation exacte et le verdict final qui a été rendu.
+
+### 3. 🤔 L'Ingénierie Contextuelle et "Le Garde-fou"
+Pour éviter les hallucinations du modèle LLM :
+- Nous traduisons numériquement les données complexes (Context Engineering) en texte narratif.
+- L'algorithme calcule d'abord un score de probabilité brut (Low, Medium, High). Ce score dicte au Bot si la transaction est intrinsèquement dangereuse, l'empêchant d'être trop facilement influencé par un manipulateur.
+
+---
+
 ## 🏗️ Architecture du Projet
 
-```
+```text
 projet_chatbot_antifraude/
 │
-├── data/                              # Datasets (générés sur Kaggle - Semaine 1)
+├── data/                              # Datasets et sauvegardes
 │   ├── context_examples_with_risk.csv # 10 transactions exemples (interface)
-│   ├── test_ulb_LOCKED_with_risk.csv  # Jeu de test ULB (non modifié)
-│   ├── test_paysim_LOCKED_with_risk.csv  # Jeu de test PaySim (non modifié)
+│   ├── test_ulb_LOCKED_with_risk.csv  # Jeu de test ULB
+│   ├── test_paysim_LOCKED_with_risk.csv  # Jeu de test PaySim
+│   ├── live_history.json              # Historique de nos enquêtes Live
 │   └── metadata.json                  # Métadonnées des datasets
 │
-├── src/                               # Backend Python
-│   ├── llm_client.py                  # Client Groq API (Llama 3.3 70B)
+├── src/                               # Backend Python (Cœur cognitif)
+│   ├── llm_client.py                  # Client API Groq (Llama 3)
 │   ├── context_manager.py             # Gestion du contexte dynamique
-│   ├── chatbot.py                     # Moteur d'investigation (auto + interactif)
-│   └── chat_history.py                # Gestion de l'historique de conversation
+│   ├── chatbot.py                     # Moteur d'investigation (Interaction)
+│   └── chat_history.py                # Gestion de la mémoire de conversation
 │
-├── results/
-│   ├── semaine2/                      # 3 transcriptions de test (Semaine 2)
-│   └── semaine3/                      # 30 investigations + métriques (Semaine 3)
+├── web_app/                           # Interface Utilisateur (Frontend)
+│   └── app.py                         # Application Streamlit complète
 │
-├── web_app/
-│   └── app.py                         # Interface Streamlit complète (Semaine 4)
-│
-├── notebook96abd24326.ipynb           # Notebook Kaggle (Semaines 1-3)
-├── .env.example                       # Modèle pour la configuration
+├── presentation_slides.md             # Slides de la présentation PowerPoint
+├── Plan___Chatbot_d_Investigation...  # Plan de développement PDF
+├── notebook_summary.txt               # Export texte du notebook Kaggle
 ├── requirements.txt                   # Dépendances Python
 └── README.md
 ```
 
 ---
 
-## 🔑 Fonctionnalités Clés
-
-### 🧠 Contexte Dynamique
-À chaque tour de dialogue, le système accumule et enrichit le contexte :
-- **Transaction originale** (montant, source, score de risque calculé)
-- **Questions/réponses antérieures** (historique complet envoyé au LLM)
-- **Signaux fraude** détectés au fil de la conversation
-- **Signaux légitimes** recueillis pour équilibrer l'analyse
-- **Confiance** mise à jour à chaque étape (0 → 100%)
-
-### 💬 Tab 1 — Investigation Live (Mode Interactif)
-1. Sélectionnez une transaction dans la barre latérale (filtre par source/risque)
-2. Cliquez sur **"🚀 Lancer l'Investigation"**
-3. L'analyste IA pose des questions ciblées une par une
-4. Vous répondez librement en langage naturel
-5. Le mini-tableau de bord de gauche se met à jour en temps réel :
-   - Jauge de confiance fraude
-   - Signaux fraude accumulés (badges rouges)
-   - Signaux légitimes accumulés (badges verts)
-6. Après **6 questions**, le LLM rend son **verdict final** avec justification
-
-### 📊 Tab 2 — Analyse & Métriques (Semaine 3)
-- **6 KPI** : Accuracy, Precision, Recall, F1, Questions moyennes, Confiance moyenne
-- **Matrice de confusion** interactive (Plotly)
-- **Histogramme** de confiance pour chacune des 30 investigations
-- **Donut chart** de répartition des verdicts (VP/FP/VN/FN)
-- **Explorateur de transcriptions** : parcourir les 30 dialogues complets de Semaine 3
-
----
-
-## ⚙️ Stack Technique
-
-| Composant | Technologie |
-|-----------|-------------|
-| LLM | Llama 3.3 70B Versatile (via Groq API) |
-| Interface | Streamlit (Python) |
-| Visualisations | Plotly |
-| Datasets | Credit Card Fraud Detection ULB + PaySim |
-| Scoring risque | Calcul de features custom |
-| Historique | Liste de messages (format OpenAI-compatible) |
-
----
-
 ## 🚀 Installation & Lancement
 
-### 1. Cloner le repo
+Ce projet utilise **Streamlit** pour l'interface UI et **l'API Groq** pour faire tourner le LLM (Llama 3) ultra-rapidement.
+
+### 1. Prérequis
+- Avoir Python 3.10 ou supérieur installé.
+- Avoir un compte sur [Groq Cloud](https://console.groq.com) pour obtenir une clé API gratuite.
+
+### 2. Cloner le repo
+Ouvrez un terminal et clonez le projet sur votre machine locale :
 ```bash
 git clone https://github.com/Ambdulghaffar/ccfd-investigation-chatbot.git
 cd ccfd-investigation-chatbot
 ```
 
-### 2. Installer les dépendances
+### 3. Installer les dépendances
+Installez les librairies requises via pip :
 ```bash
 pip install -r requirements.txt
 ```
+*(Optionnel mais recommandé : effectuez cela dans un environnement virtuel `venv`)*
 
-### 3. Configurer la clé API Groq
-Créez un fichier `.env` à la racine du projet :
+### 4. Configurer la clé API Groq
+Le Chatbot a besoin de se connecter à l'intelligence artificielle. Créez un fichier `.env` à la racine du projet (exactement là où se trouve ce README) et collez le contenu suivant :
 ```env
-GROQ_API_KEY=gsk_votre_cle_ici
-LLM_MODEL=llama-3.3-70b-versatile
+# Clé API générée sur la console Groq
+GROQ_API_KEY=votre_cle_api_groq_ici
+
+# Configurations du modèle
+LLM_MODEL=llama3-70b-8192
 MAX_QUESTIONS=6
 ```
-> 🔗 Obtenir une clé gratuite sur [console.groq.com](https://console.groq.com)
 
-### 4. Lancer l'interface
+### 5. Lancer l'application
+Le point d'entrée du projet se trouve dans le dossier `web_app`. Lancez la commande suivante :
 ```bash
 streamlit run web_app/app.py
 ```
-Puis ouvrir dans le navigateur : **http://localhost:8501**
+> 🎉 **C'est prêt !** Un lien local (généralement `http://localhost:8501/`) va s'afficher dans votre console. Cliquez dessus pour ouvrir l'application dans votre navigateur.
 
 ---
 
-## 📈 Résultats Semaine 3 (30 Investigations)
+## 📈 Résultats et Statistiques (Évaluation Notebook)
+
+Pour juger efficacement notre module sans intervention humaine, nous avons généré un agent "ClientSimulator" afin de jouer 30 enquêtes automatiques (Bot VS Bot).
 
 | Métrique | Valeur |
 |----------|--------|
-| Accuracy | 50% |
-| Precision | 50% |
-| **Recall** | **100%** |
-| F1 Score | 0.67 |
-| Vrais Positifs (fraudes détectées) | 15/15 |
-| Faux Positifs (légitimes mal classés) | 15/15 |
-| Questions moyennes par investigation | 6 |
-| Confiance moyenne | 69% |
+| Accuracy (Exactitude globale) | 66.7% |
+| Precision (Transactions bloquées justement) | 61.9% |
+| **Recall (Sensibilité à la fraude)** | **86.7%** |
+| F1 Score | 72.2% |
+| Questions moyennes par investigation | 2.7 questions |
+| Confiance moyenne | 81% ! |
 
-> Le recall de 100% signifie que **toutes les fraudes réelles ont été détectées**. Le modèle adopte une stratégie prudente (biais vers FRAUDE).
+> 💡 **Le Biais Sécuritaire :** Le *recall très élevé* (13 fraudes trouvées sur 15) indique que le modèle penche vers une attitude prudente de 'blocage préventif' (FRAUDE) en cas de doutes sur le client. Ce trait comportemental le rend très robuste face à l'ingénierie sociale !
 
 ---
 
-## 📅 Plan du Projet par Semaines
+## 🗂️ Ressources et Datasets
 
-| Semaine | Travail | Status |
-|---------|---------|--------|
-| **S1** | Chargement et fusion des datasets ULB + PaySim, calcul du score de risque | ✅ |
-| **S2** | Développement du moteur chatbot, 3 premières transcriptions test | ✅ |
-| **S3** | 30 investigations automatiques, calcul des métriques de convergence | ✅ |
-| **S4** | Interface graphique Streamlit (Investigation Live + Dashboard métriques) | ✅ |
+- **Credit Card Fraud Detection (ULB)** — [Lien Kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)  
+- **Synthetic Financial Datasets (PaySim)** — [Lien Kaggle](https://www.kaggle.com/datasets/ealaxi/paysim1)  
 
----
-
-## 🗂️ Datasets
-
-- **Credit Card Fraud Detection (ULB)** — [Kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)  
-  284 807 transactions réelles anonymisées (PCA), 0.17% de fraudes
-  
-- **Synthetic Financial Datasets (PaySim)** — [Kaggle](https://www.kaggle.com/datasets/ealaxi/paysim1)  
-  6 362 620 transactions synthétiques mobiles, 0.13% de fraudes
+Le code expérimental, le nettoyage des données et les calculs statistiques Sont situés sur notre notebook Kaggle :
+🔗 **[Voir le notebook complet sur Kaggle](https://www.kaggle.com/code/ambdulghaffrar/notebook96abd24326/notebook)**
 
 ---
 
-## � Notebook Kaggle (Semaines 1–3)
+## 👤 Informations Étudiant
 
-Le notebook complet (pipeline de données, scoring de risque, moteur chatbot, 30 investigations) est disponible sur Kaggle :
+**Étudiant :** Ambdulghaffar Ahamadi  
+**Professeur Encadrant :** Naoufal Rtayli  
+**Module :** Sécurité des Transactions Électroniques et Détection de Fraudes (Master S3)  
 
-🔗 [Voir le notebook sur Kaggle](https://www.kaggle.com/code/ambdulghaffrar/notebook96abd24326/notebook?scriptVersionId=301265852)
-
----
-
-## 👤 Ambdulghaffar Ahamadi
-
-Projet Master S3 · Sécurité des Transactions Électroniques et Détection de Fraudes  
-*Context Engineering + LLM pour la Détection de Fraude Cartes Bancaires*
+> Modèle de fondation utilisé : Llama 3 (Meta) / API : Groq
