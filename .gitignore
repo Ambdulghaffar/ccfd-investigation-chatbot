@@ -4,7 +4,7 @@
 
 # ── Documents PDF internes ────────────────────────────────────────────────────
 projets_CCFD_LLM (1).pdf
-Plan Projet__Chatbot_d_Investigation___Dialogue_LLM.pdf
+Plan___Chatbot_d_Investigation___Dialogue_LLM.pdf
 
 # ── Gros fichiers de données (trop volumineux pour GitHub) ───────────────────
 data/train_unified_with_risk.csv
@@ -52,3 +52,7 @@ desktop.ini
 *.log
 *.tmp
 *.bak
+# Fichiers extra
+presentation_slides.md
+extract_nb.py
+notebook_summary.txt
