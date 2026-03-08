@@ -56,9 +56,7 @@ projet_chatbot_antifraude/
 ├── web_app/                           # Interface Utilisateur (Frontend)
 │   └── app.py                         # Application Streamlit complète
 │
-├── presentation_slides.md             # Slides de la présentation PowerPoint
-├── Plan___Chatbot_d_Investigation...  # Plan de développement PDF
-├── notebook_summary.txt               # Export texte du notebook Kaggle
+├── .gitignore
 ├── requirements.txt                   # Dépendances Python
 └── README.md
 ```
