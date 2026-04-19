@@ -1,0 +1,31 @@
+📑 PLAN DU RAPPORT FINAL (En 5 Chapitres)
+Page de Garde & Table des Matières
+
+Chapitre 1 : Introduction Générale et Cadrage du Projet
+1.1 Contexte et problématique : Les limites des algorithmes classiques de détection de fraude et la nécessité d'une investigation interactive.
+1.2 Objectifs du projet : Présentation de la stratégie hybride (Machine Learning + Intelligence Artificielle Générative).
+1.3 Présentation des jeux de données : Exploration de PaySim (mobile) et ULB (cartes bancaires anonymisées V1-V28).
+
+Chapitre 2 : Préparation des Données et Scoring Prédictif (Le Cerveau ML)
+2.1 Audit et Qualité des données (Data Quality) : Validation de l'intégrité des datasets (valeurs nulles, doublons).
+2.2 Stratégie Anti-Surapprentissage : Partitionnement Train/Test (80/20) avec stratification et verrouillage des données de test.
+2.3 Modélisation Baseline (Ancrage quantitatif) : Calcul du score de risque initial probabiliste et calibration en niveaux qualitatifs (LOW, MEDIUM, HIGH).
+
+Chapitre 3 : Ingénierie Contextuelle et Architecture de l'Agent IA
+3.1 Le "Traducteur Universel" (Context Engineering) : Transformation des données tabulaires brutes en narration compréhensible pour le LLM.
+3.2 Architecture cognitive du Chatbot : Présentation de l'intégration du modèle de fondation Llama-3 via l'API Groq.
+3.3 Contexte Dynamique et Outils : Gestion de la mémoire à court terme et simulation RAG (appels d'outils comme la géolocalisation).
+3.4 Sécurité et Bouclier Anti-Jailbreak : Protocoles stricts intégrés au System Prompt pour résister à l'ingénierie sociale.
+
+Chapitre 4 : Évaluation Automatisée et Analyse des Performances
+4.1 Méthodologie d'évaluation "Self-Play" : Architecture Bot vs Bot (Enquêteur IA face à un Simulateur Client basé sur des règles) sur 30 transactions.
+4.2 Performances de détection : Analyse des métriques clés (Rappel à 93.3%, Précision, Accuracy, F1-Score) et de la Matrice de Confusion.
+4.3 Interprétation des courbes Machine Learning : Analyse approfondie via les courbes ROC et Précision-Rappel.
+4.4 Efficacité et Convergence : Évaluation de la rapidité d'investigation (moyenne de 3.5 questions) et de la confiance du modèle.
+
+Chapitre 5 : Déploiement Interactif et Bilan du Projet
+5.1 L'Application Web Interactive : Présentation de l'interface Streamlit (Dashboard analytique et Chat en direct).
+5.2 Études de cas pratiques (Live History) : Comportement du bot face à des scénarios réels (Urgence feinte, résistance au Jailbreak, validation de clients légitimes).
+5.3 Écosystème Technologique : Synthèse de la stack technique déployée (Python, Scikit-Learn, Pandas, Groq, Streamlit).
+5.4 L'Architecture Globale et Fonctionnalités : Présentation du workflow global du système (avec l'intégration de 2 schémas d'architecture).
+5.5 Conclusion générale et Perspectives : Bilan des objectifs atteints et pistes d'amélioration futures (intégration de vraies API bancaires, réduction des faux positifs).

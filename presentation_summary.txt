@@ -1,0 +1,234 @@
+=== RÉSUMÉ DE LA PRÉSENTATION ===
+
+--------------------------------------------------
+--- SLIDE 1 ---
+Présenté par : Ambdulghaffar Ahamadi
+Professeur encandrant : Naoufal Rtayli
+-
+Chatbot d'investigation CCFD : dialogue intelligent + contexte dynamique
+Sécurité des Transactions Électroniques et Détection de Fraudes
+Université Abdelmalek Essaâdi
+Faculté des Sciences de Tétouan
+Département d’Informatique
+Année universitaire : 2025 / 2026
+Filière : MS_QL
+
+--------------------------------------------------
+--- SLIDE 2 ---
+-
+Plan
+Introduction et problématique
+Données et méthodologie
+Architecture et Fonctionnement du Chatbot
+Interprétation des résultats et démonstration 
+ Fonctionnalités et stack technique
+Conclusion et perspectives
+
+--------------------------------------------------
+--- SLIDE 3 ---
+Introduction et problématique
+
+--------------------------------------------------
+--- SLIDE 4 ---
+-
+Problématique et Livrables du Projet
+Problématique Centrale : 
+Comment créer un LLM conversationnel qui, en dialogue interactif, utilise un contexte dynamique pour converger vers une décision de fraude ?
+
+Livrables Réalisés : 
+Code chatbot complet (Python + LLM API)
+30 transcriptions de dialogues (évaluations massives)
+Métriques de performance (Précision, Recall, Convergence)
+
+--------------------------------------------------
+--- SLIDE 5 ---
+CONTENT
+Données et Méthodologie
+
+
+--------------------------------------------------
+--- SLIDE 6 ---
+-
+Datasets Kaggle et Pipeline de Données
+Sources de Données :
+PaySim (Mobile Transactions)
+ULB Credit Card Fraud Detection
+Démarche Qualité :
+Nettoyage et vérification stricte
+Division Train/Test (80/20)
+Verrouillage des Test Sets
+
+--------------------------------------------------
+--- SLIDE 7 ---
+-
+Le Garde-fou Quantitatif (Score Baseline)
+Objectif : Sécuriser la décision du LLM
+Calcul du score avant l'interrogatoire (Ancrage Probabiliste)
+Détermination du Risque Initial (LOW, MEDIUM, HIGH)
+Empêche l'IA d'être manipulée par des réponses évasives
+Garantit la rigueur pour les transactions à haut risque
+
+--------------------------------------------------
+--- SLIDE 8 ---
+CONTENT
+Architecture et Fonctionnement du Chatbot
+
+
+--------------------------------------------------
+--- SLIDE 9 ---
+Transaction originale (montant, pays, device)
+Historique client et signaux fraudes accumulées
+Questions/réponses antérieures synthétisées
+Actions déjà prises et contexte bancaire
+Données injectées à chaque tour de parole :
+Le Cœur Intelligent : Le Contexte Dynamique
+
+--------------------------------------------------
+--- SLIDE 10 ---
+-
+Architecture Cognitive du Chatbot
+Moteur : Llama 3 (via Groq API)
+Inférence ultra-rapide et haute performance
+Strict Rule-set : Refus des sujets hors-propos
+Détection proactive des incohérences utilisateur
+Stratégie d'interrogatoire séquentielle et ciblée
+
+--------------------------------------------------
+--- SLIDE 11 ---
+ABOUT
+Évaluation Automatisée (Self-Play)
+Méthode : Dialogue Bot vs Bot (Scalabilité)
+Agent Simulator : Simule client (Victime ou Fraudeur)
+Génération de 30 transcriptions massives
+Vérification de la convergence intelligente
+Indépendance des tests par rapport aux données d'entraînement
+
+--------------------------------------------------
+--- SLIDE 12 ---
+CONTENT
+Résultats et Démonstration
+
+--------------------------------------------------
+--- SLIDE 13 ---
+OTHERS
+-
+Résultats et Métriques
+
+--------------------------------------------------
+--- SLIDE 14 ---
+OTHERS
+-
+PaySim : Distribution des montants et taux de fraudes par Type
+
+--------------------------------------------------
+--- SLIDE 15 ---
+OTHERS
+-
+ULB : Distribution des montants et proportion fraudes contre légitimes
+
+--------------------------------------------------
+--- SLIDE 16 ---
+OTHERS
+-
+PaySim : Validation de la corrélation entre Score de Risque et Fraude Réelle
+
+--------------------------------------------------
+--- SLIDE 17 ---
+OTHERS
+-
+ULB : Validation de la corrélation entre Score de Risque et Fraude Réelle
+
+--------------------------------------------------
+--- SLIDE 18 ---
+OTHERS
+-
+
+--------------------------------------------------
+--- SLIDE 19 ---
+OTHERS
+-
+
+--------------------------------------------------
+--- SLIDE 20 ---
+OTHERS
+-
+
+--------------------------------------------------
+--- SLIDE 21 ---
+OTHERS
+-
+
+--------------------------------------------------
+--- SLIDE 22 ---
+OTHERS
+-
+
+--------------------------------------------------
+--- SLIDE 23 ---
+CONTENT
+DÉMONSTRATION VIDÉO
+
+--------------------------------------------------
+--- SLIDE 24 ---
+-
+L'Approche Produit : Démonstration Streamlit
+Interface Interactive et Intuitive
+Investigation Live : Dialogue en temps réel
+Dashboard de métriques et Matrix de confusion
+Sauvegarde des logs : Historique dynamique
+Résistance vérifiée à l'ingénierie sociale
+
+--------------------------------------------------
+--- SLIDE 25 ---
+-
+
+--------------------------------------------------
+--- SLIDE 26 ---
+CONTENT
+Fonctionnalités et stack technique
+
+
+--------------------------------------------------
+--- SLIDE 27 ---
+-
+Fonctionnalités Techniques du Système
+🧠 Scoring Probabiliste Initial (Machine Learning)
+🔄 Moteur d'Ingénierie Contextuelle Dynamique
+💬 Agent Analyste Conversationnel Interactif
+⚖️ Algorithme de Prise de Décision Intelligente
+📊 Dashboard de Monitoring Visuel
+
+--------------------------------------------------
+--- SLIDE 28 ---
+-
+Technologies & Écosystème Déployé
+
+--------------------------------------------------
+--- SLIDE 29 ---
+-
+Diagramme d'architecture (workflow)
+
+--------------------------------------------------
+--- SLIDE 30 ---
+Conclusion et perspectives
+HOME
+
+--------------------------------------------------
+--- SLIDE 31 ---
+-
+Conclusion et Perspectives
+Succès du modèle hybride (Probabilité + Cognition)
+Convergence rapide grâce au contexte dynamique
+Perspectives :
+Intégration RAG pour connaissance métier
+Raffinement pour réduire les Faux Positifs
+Déploiement vers des canaux vocaux
+
+--------------------------------------------------
+--- SLIDE 32 ---
+OTHERS
+https://www.kaggle.com/code/ambdulghaffrar/notebook96abd24326/notebook?scriptVersionId=302042663
+https://github.com/Ambdulghaffar/ccfd-investigation-chatbot
+-
+Merci de votre attention !!
+

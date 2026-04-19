@@ -628,5 +628,145 @@
       ]
     },
     "log_id": 9
+  },
+  {
+    "timestamp": 1773362701.2811246,
+    "transaction": {
+      "example_id": 1,
+      "transaction_id": "PAYSIM_1030754",
+      "source": "paysim",
+      "amount": 266746.42,
+      "is_fraud": 1,
+      "risk_score": 0.75,
+      "risk_level": "HIGH",
+      "context": "TRANSACTION MOBILE DÉTECTÉE\n\n🎯 ÉVALUATION DE RISQUE INITIALE\nScore de Risque : 0.750 / 1.000\nNiveau : HIGH\n\nType de Transaction : CASH_OUT\nMontant : 266746.42 unités\n\nCompte Source :\n- Solde avant : 266746.42\n- Solde après : 0.00\n- Variation : -266746.42\n\nCompte Destination :\n- Solde avant : 4433931.77\n- Solde après : 4700678.19\n- Variation : 266746.42\n\nObservations :\n• ⚠️ Le compte source a été ENTIÈREMENT VIDÉ\n• 💰 Transaction de MONTANT ÉLEVÉ (266746.42)\n\n🛡️ GARDE-FOU DÉCISIONNEL :\n• Cette transaction présente un RISQUE ÉLEVÉ\n• Ne peut PAS être classée comme 'légitime' sans justification solide"
+    },
+    "conversation": [
+      {
+        "role": "bot",
+        "content": "Pouvez-vous m'expliquer la raison de cette transaction de retrait d'argent en grande quantité ?"
+      },
+      {
+        "role": "user",
+        "content": "Bonjour. Je confirme totalement cette opération. Je suis en train de fermer mes comptes dans votre établissement pour centraliser mon épargne ailleurs. C'est pour cela que je vide le solde restant"
+      },
+      {
+        "role": "bot",
+        "content": "Pouvez-vous me fournir le nom de l'établissement où vous allez centraliser votre épargne ?"
+      },
+      {
+        "role": "user",
+        "content": "Je peux vous confirmer qu'il s'agit du RIB commençant par FR76 3000. J'ai eu mon conseiller Monsieur Martin au téléphone ce matin pour valider la procédure de fermeture. Tout est en ordre de mon côté, vous pouvez vérifier la cohérence du nom du titulaire."
+      },
+      {
+        "role": "bot",
+        "content": "Avez-vous un document ou un numéro de référence fourni par Monsieur Martin pour confirmer la procédure de fermeture de compte et le transfert des fonds ?"
+      },
+      {
+        "role": "user",
+        "content": "Bien sûr, c'est le 01 42 63 90 00. Il s'agit du numéro direct de l'agence de la Société Générale, Boulevard Haussmann à Paris. J'ai eu Monsieur Martin en ligne précisément à 10h ce matin, il pourra vous confirmer que nous avons validé ensemble la procédure de clôture de mon compte et ce transfert de fonds."
+      },
+      {
+        "role": "bot",
+        "content": "Pouvez-vous me confirmer que vous êtes bien en possession de la carte bancaire associée au compte source et que vous avez effectué cette transaction depuis un endroit sécurisé ?"
+      },
+      {
+        "role": "user",
+        "content": "oui bien sur je peux le confirmer j'ai ma carte avec moi ici"
+      },
+      {
+        "role": "bot",
+        "content": "Pouvez-vous me donner les quatre derniers chiffres de la carte bancaire associée au compte source pour vérification de sécurité ?"
+      },
+      {
+        "role": "user",
+        "content": "3000"
+      },
+      {
+        "role": "bot",
+        "content": "J'ai réuni suffisamment d'éléments. Voici ma décision finale :"
+      }
+    ],
+    "decision": {
+      "decision": "LEGITIME",
+      "confidence": 80,
+      "justification": "La décision de considérer cette transaction comme légitime est basée sur les explications plausibles fournies par le titulaire du compte, la mention d'un conseiller spécifique et le numéro de téléphone fourni pour confirmer la procédure de fermeture de compte. Les signaux de fraude, tels que le montant élevé et le compte vidé, sont atténués par les preuves de possession de la carte et les détails de la transaction fournis par le titulaire. La confiance dans la légitimité de la transaction est renforcée par la cohérence des informations fournies.",
+      "key_signals": [
+        "Explication plausible",
+        "Conseiller mentionné",
+        "Carte en possession"
+      ]
+    },
+    "log_id": 10
+  },
+  {
+    "timestamp": 1776566311.794067,
+    "transaction": {
+      "example_id": 1,
+      "transaction_id": "PAYSIM_1030754",
+      "source": "paysim",
+      "amount": 266746.42,
+      "is_fraud": 1,
+      "risk_score": 0.75,
+      "risk_level": "HIGH",
+      "context": "TRANSACTION MOBILE DÉTECTÉE\n\n🎯 ÉVALUATION DE RISQUE INITIALE\nScore de Risque : 0.750 / 1.000\nNiveau : HIGH\n\nType de Transaction : CASH_OUT\nMontant : 266746.42 unités\n\nCompte Source :\n- Solde avant : 266746.42\n- Solde après : 0.00\n- Variation : -266746.42\n\nCompte Destination :\n- Solde avant : 4433931.77\n- Solde après : 4700678.19\n- Variation : 266746.42\n\nObservations :\n• ⚠️ Le compte source a été ENTIÈREMENT VIDÉ\n• 💰 Transaction de MONTANT ÉLEVÉ (266746.42)\n\n🛡️ GARDE-FOU DÉCISIONNEL :\n• Cette transaction présente un RISQUE ÉLEVÉ\n• Ne peut PAS être classée comme 'légitime' sans justification solide"
+    },
+    "conversation": [
+      {
+        "role": "bot",
+        "content": "Pouvez-vous confirmer la transaction de retrait d'argent de 266746,42 unités ?"
+      },
+      {
+        "role": "user",
+        "content": "oui bien sur je peux vous le confimer , c'est pour un deplacement de mes fonds vers mon compte secondaire car je compte fermé celui ci bientot inchallah ."
+      },
+      {
+        "role": "bot",
+        "content": "Pouvez-vous me fournir les informations de vérification de votre identité pour confirmer que vous êtes bien le propriétaire du compte source ?"
+      },
+      {
+        "role": "user",
+        "content": "oui je peux vous les envoyer , dis moi juste lesquels et je vous les envois tout de suite "
+      },
+      {
+        "role": "bot",
+        "content": "Je ne peux pas demander des informations personnelles. Pouvez-vous me dire pourquoi vous avez besoin de fermer le compte source ?"
+      },
+      {
+        "role": "user",
+        "content": "car je veux profiter des offres genereuses pour une la nouvelle compte ouverte comme le Frais de tenue de compte offerts "
+      },
+      {
+        "role": "bot",
+        "content": "Pouvez-vous me confirmer que vous avez bien reçu un email ou un message de notre banque vous informant de la fermeture du compte source ?"
+      },
+      {
+        "role": "user",
+        "content": "oui je l'ai bien recu , c'est pour ca meme que je veux deplacer les fonds vers ce nouveau compte "
+      },
+      {
+        "role": "bot",
+        "content": "Pouvez-vous me donner le numéro de téléphone associé à votre compte pour que je puisse vous appeler pour vérifier certaines informations ?"
+      },
+      {
+        "role": "user",
+        "content": "ok voici le numero de telephone : +212632567890"
+      },
+      {
+        "role": "bot",
+        "content": "J'ai réuni suffisamment d'éléments. Voici ma décision finale :"
+      }
+    ],
+    "decision": {
+      "decision": "LEGITIME",
+      "confidence": 60,
+      "justification": "La confiance dans la transaction a augmenté au fil de l'investigation, car le client a fourni des explications plausibles pour le transfert de fonds et la fermeture du compte source. Les signaux de fraude, tels que le montant élevé et le compte vidé, sont contrebalancés par les signaux légitimes, tels que la déclaration de transfert et le motif de fermeture. Cependant, il est important de noter que la confiance n'est pas totale en raison du risque initial élevé.",
+      "key_signals": [
+        "Déclaration de transfert",
+        "Motif de fermeture",
+        "Montant élevé"
+      ]
+    },
+    "log_id": 11
   }
 ]

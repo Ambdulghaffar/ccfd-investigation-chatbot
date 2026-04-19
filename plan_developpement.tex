@@ -1,0 +1,132 @@
+\documentclass[a4paper,11pt]{article}
+
+% Packages pour l'encodage et la langue
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+
+% Packages pour la mise en page
+\usepackage{geometry}
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+% Définition des couleurs
+\definecolor{primary}{RGB}{0, 51, 102} % Bleu foncé
+\definecolor{secondary}{RGB}{204, 0, 0} % Rouge pour les points critiques
+
+% Configuration des titres
+\titleformat{\section}
+{\color{primary}\normalfont\Large\bfseries}
+{\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\color{primary}\normalfont\large\bfseries}
+{\thesubsection}{1em}{}
+
+% Titre du document
+\title{\textbf{Plan de Développement : Chatbot d'Investigation Anti-Fraude}}
+\author{Étudiant : Ambdulghaffar Ahamadi \\ Projet choisi : \textbf{Projet 4 - Chatbot d'Investigation : Dialogue LLM}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+Ce document retrace la chronologie de développement du projet de Chatbot d'Investigation CCFD (Credit Card Fraud Detection). Le projet a suivi une approche agile sur 4 semaines, alternant entre l'ingénierie des données sur Kaggle et le déploiement applicatif via Streamlit. L'objectif principal était de coupler un socle statistique robuste (Machine Learning) à une intelligence cognitive (LLM Llama-3) pour transformer la détection de fraude en investigation interactive.
+
+\hrulefill
+
+\section{Semaine 1 : Pipeline de Données Hybride \& Context Engineering}
+\textbf{Objectif :} Unifier les sources de données et établir un ancrage probabiliste objectif.
+
+\subsection{Tâche 1 : Ingestion et Qualité (Kaggle)}
+\begin{itemize}
+    \item Extraction et fusion des datasets \textit{PaySim} (transactions mobiles) et \textit{ULB} (carte bancaire).
+    \item Vérifications de qualité : suppression des doublons (1081 détectés), vérification des valeurs nulles et des montants négatifs.
+    \item Division Train/Test (80-20) stratifiée avec verrouillage du \textit{Test Set} pour l'évaluation finale.
+\end{itemize}
+
+\subsection{Tâche 2 : Scoring Baseline \& Calibration}
+\begin{itemize}
+    \item Implémentation du calcul de \textbf{Score de Risque Baseline} (0 à 1) calculé AVANT l'appel au LLM.
+    \item Calibration qualitative des seuils : \textbf{LOW} ($<0.4$), \textbf{MEDIUM} ($0.4-0.7$), et \textbf{HIGH} ($\geq 0.7$).
+    \item Validation de la cohérence : les fraudes réelles affichent un score moyen de 0.76 contre 0.31 pour les transactions légitimes.
+\end{itemize}
+
+\subsection{Tâche 3 : Moteur de Traduction "Context Translator"}
+\begin{itemize}
+    \item Développement du \textit{Context Translator} universel transformant les données brutes (V1-V28 pour ULB, balances pour PaySim) en récits narratifs structurés.
+    \item Injection automatique du score de risque dans le prompt pour guider le raisonnement du modèle.
+\end{itemize}
+
+\section{Semaine 2 : Architecture Cognitive \& Classes d'Objets}
+\textbf{Objectif :} Définir les briques logicielles et l'intelligence de l'agent.
+
+\subsection{Tâche 1 : Modélisation Orientée Objet (src/)}
+\begin{itemize}
+    \item Classe \texttt{ChatHistory} : Gestion de la mémoire de travail et cycle de vie des questions.
+    \item Classe \texttt{ContextManager} : Maintien de l'état global et des métadonnées de l'enquête.
+    \item Intégration de la librairie JSON pour forcer le LLM à produire des réponses structurées (Status, Confiance, Justification).
+\end{itemize}
+
+\subsection{Tâche 2 : Intégration API LLM (Groq)}
+\begin{itemize}
+    \item Connexion au client \textit{Groq Cloud} pour exploiter le modèle \textbf{Llama-3-70B}.
+    \item Optimisation de la latence via l'infrastructure LPU pour garantir une interactivité fluide.
+\end{itemize}
+
+\subsection{Tâche 3 : Développement des "Tools" d'Investigation}
+\begin{itemize}
+    \item Simulation d'outils externes (Géolocalisation, Historique, Analyse Marchand).
+    \item Mécanisme de \textit{Tool Calling} simplifié permettant au bot de "penser" avant de poser une question au client.
+\end{itemize}
+
+\section{Semaine 3 : Moteur "Self-Play", Production & Métriques ML}
+\textbf{Objectif :} Mise à l'épreuve du système et évaluation scientifique massive.
+
+\subsection{Tâche 1 : Simulateur de Client Robuste}
+\begin{itemize}
+    \item Création d'un simulateur \textit{Rule-Based} répondant aux questions du bot selon la "Vérité Terrain" (is\_fraud) pour éviter les hallucinations circulaires.
+    \item Configuration des profils : Fraudeur agressif/pressé vs Client légitime précis/calme.
+\end{itemize}
+
+\subsection{Tâche 2 : Production Massive (30 Investigations)}
+\begin{itemize}
+    \item Exécution automatisée de 30 enquêtes complètes (15 fraudes / 15 légitimes) couvrant tous les niveaux de risque.
+    \item Sauvegarde des transcriptions au format JSON pour analyse approfondie.
+\end{itemize}
+
+\subsection{Tâche 3 : Analyse Statistique \& Visualisation (Graphviz)}
+\begin{itemize}
+    \item Calcul des performances : Rappel exceptionnel de \textbf{93\%} (détection quasi-totale des fraudes).
+    \item Génération automatique de la matrice de confusion et des courbes ROC/PR via \textit{Matplotlib/Seaborn}.
+    \item Modélisation du workflow global via \textit{Graphviz} pour documentation technique.
+\end{itemize}
+
+\section{Semaine 4 : Déploiement Streamlit & Sécurisation Finale}
+\textbf{Objectif :} Transformation du prototype en application Web utilisable par des agents de sécurité.
+
+\subsection{Tâche 1 : Développement de l'Interface Web}
+\begin{itemize}
+    \item Création de l'application \texttt{app.py} avec le framework \textit{Streamlit}.
+    \item \textbf{Mode Live Investigation :} Chatbot interactif avec jauges de risque dynamiques et visualisation des outils utilisés.
+    \item \textbf{Dashboard Analytique :} Vue d'ensemble des 30 investigations passées pour supervision humaine.
+\end{itemize}
+
+\subsection{Tâche 2 : Sécurité et "Red Teaming"}
+\begin{itemize}
+    \item Durcissement du \textit{System Prompt} pour bloquer les tentatives de \textit{Jailbreak}.
+    \item Protection contre les injections de prompt : le chatbot refuse de "sortir de son rôle" ou de donner des recettes de cuisine.
+\end{itemize}
+
+\subsection{Tâche 3 : Finalisation et Optimisation}
+\begin{itemize}
+    \item Correction des bugs de boucle infinie (Perrot Bug).
+    \item Optimisation du design (Glassmorphism) et rédaction du rapport technique final de 46 pages.
+\end{itemize}
+
+\end{document}

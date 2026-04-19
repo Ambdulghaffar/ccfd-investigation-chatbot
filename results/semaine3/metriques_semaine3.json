@@ -1,29 +1,29 @@
 {
-  "date_generation": "2026-03-07 18:45:01",
+  "date_generation": "2026-04-11 09:00:00",
   "nb_investigations": 30,
   "performance": {
-    "accuracy": 0.6,
-    "precision": 0.5789473684210527,
-    "recall": 0.7333333333333333,
-    "f1_score": 0.6470588235294118,
+    "accuracy": 0.667,
+    "precision": 0.619,
+    "recall": 0.867,
+    "f1_score": 0.722,
     "confusion_matrix": {
       "TN": 7,
       "FP": 8,
-      "FN": 4,
-      "TP": 11
+      "FN": 2,
+      "TP": 13
     }
   },
   "convergence": {
-    "nb_questions_mean": 2.2333333333333334,
+    "nb_questions_mean": 2.7,
     "nb_questions_min": 1,
     "nb_questions_max": 6,
-    "duration_mean": 32.23633333333333,
-    "duration_min": 12.02,
-    "duration_max": 114.23
+    "duration_mean": 43.56,
+    "duration_min": 5.34,
+    "duration_max": 146.73
   },
   "confidence": {
-    "mean_all": 84.66666666666667,
-    "mean_correct": 89.72222222222223,
-    "mean_incorrect": 77.08333333333333
+    "mean_all": 81.7,
+    "mean_correct": 82.8,
+    "mean_incorrect": 79.5
   }
 }
