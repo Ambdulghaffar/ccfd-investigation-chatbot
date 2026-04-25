@@ -50,7 +50,4 @@ desktop.ini
 *.bak
 # Fichiers extra
 presentation_slides.md
-extract_nb.py
 notebook_summary.txt
-extract_nb.py
-extract_ppt.py

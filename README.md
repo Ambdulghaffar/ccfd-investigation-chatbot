@@ -35,30 +35,49 @@ Pour éviter les hallucinations du modèle LLM :
 
 ---
 
+## 🔄 Workflow du Projet
+
+![Workflow du Projet](workflow_projet.png)
+
+---
+
 ## 🏗️ Architecture du Projet
 
 ```text
 projet_chatbot_antifraude/
 │
 ├── data/                              # Datasets et sauvegardes
-│   ├── context_examples_with_risk.csv # 10 transactions exemples (interface)
-│   ├── test_ulb_LOCKED_with_risk.csv  # Jeu de test ULB
-│   ├── test_paysim_LOCKED_with_risk.csv  # Jeu de test PaySim
-│   ├── live_history.json              # Historique de nos enquêtes Live
-│   └── metadata.json                  # Métadonnées des datasets
+│   ├── context_examples_with_risk.csv # Transactions exemples pour l'UI
+│   ├── test_ulb_LOCKED_with_risk.csv  # Jeu de test ULB (Calibration)
+│   ├── test_paysim_LOCKED_with_risk.csv # Jeu de test PaySim (Calibration)
+│   ├── live_history.json              # Historique des sessions utilisateur
+│   └── metadata.json                  # Métadonnées et descriptions
+│
+├── docs/                              # Documentation technique et rapports
+│   ├── PLAN_DEVELOPPEMENT.md          # Chronologie détaillée du projet
+│   ├── Rapport_AMBDULGHAFFAR... .pdf  # Rapport final de Master
+│   ├── rapport.tex                    # Source LaTeX du rapport
+│   └── presentation_summary.txt       # Script de présentation orale
+│
+├── results/                           # Logs et performances (Semaine 3)
+│   ├── log_s3_1.json ... log_s3_30.json # 30 enquêtes de production massives
+│   └── metriques_semaine3.json        # Résultats statistiques (Rappel, etc.)
 │
 ├── src/                               # Backend Python (Cœur cognitif)
-│   ├── llm_client.py                  # Client API Groq (Llama 3)
-│   ├── context_manager.py             # Gestion du contexte dynamique
-│   ├── chatbot.py                     # Moteur d'investigation (Interaction)
-│   └── chat_history.py                # Gestion de la mémoire de conversation
+│   ├── llm_client.py                  # Client API Groq (Llama 3-70B)
+│   ├── context_manager.py             # Moteur de Context Engineering
+│   ├── chatbot.py                     # Agent d'investigation principal
+│   ├── chat_history.py                # Gestionnaire de mémoire courte
+│   └── __init__.py
 │
 ├── web_app/                           # Interface Utilisateur (Frontend)
-│   └── app.py                         # Application Streamlit complète
+│   └── app.py                         # Application Streamlit Dashboard & Live
 │
-├── .gitignore
-├── requirements.txt                   # Dépendances Python
-└── README.md
+├── notebook96abd24326.ipynb           # Pipeline Kaggle (Cleaning & Scoring)
+├── workflow_projet.png                # Schéma du workflow projet
+├── .env                               # Variables d'environnement (Clé API)
+├── requirements.txt                   # Dépendances du projet
+└── README.md                          # Documentation principale
 ```
 
 ---
@@ -128,7 +147,7 @@ Pour juger efficacement notre module sans intervention humaine, nous avons gén�
 - **Synthetic Financial Datasets (PaySim)** — [Lien Kaggle](https://www.kaggle.com/datasets/ealaxi/paysim1)  
 
 Le code expérimental, le nettoyage des données et les calculs statistiques Sont situés sur notre notebook Kaggle :
-🔗 **[Voir le notebook complet sur Kaggle](https://www.kaggle.com/code/ambdulghaffrar/notebook96abd24326/notebook?scriptVersionId=302042663)**
+🔗 **[Voir le notebook complet sur Kaggle](https://www.kaggle.com/code/ambdulghaffrar/notebook96abd24326/notebook?scriptVersionId=312502267)**
 
 ---
 
